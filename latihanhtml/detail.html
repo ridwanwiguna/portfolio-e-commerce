@@ -1,0 +1,75 @@
+<?php 
+session_start();
+include 'koneksi.php';
+
+
+
+
+?>  
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Rio Indah Berkah Jaya</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <link rel="stylesheet" type="text/css" href="fontawesome/css/all.min.css">
+
+    <link rel="stylesheet" type="text/css" href="style.css">
+    
+  </head>
+  <body>
+     
+     <!--navbar-->
+    <?php include 'menu.php'; ?>
+
+    <div class="col-md-2 mt-5" bg-light>
+          <ul class="list-group list-group-flush p-2 pt-5 ">
+
+             <li class="list-group-item bg-primary"><i class="fas fa-list"></i> KATEGORI PRODUK</li>
+
+            <?php $ambil = $koneksi->query("SELECT * FROM kategori "); ?>
+            <?php while($pecah=$ambil->fetch_assoc()){?>
+             <li class="list-group-item"><i class="fas fa-angle-double-right"></i>
+             <a href="kategori.php?category=<?php echo $pecah ['id_kategori']; ?>"><?php echo $pecah ["kategori"]; ?></a>
+             </li>
+             <?php }  ?>
+             
+            
+        </ul>
+        </div>
+
+
+    <h4 class="text-center font-weight-bold m-4">Kategori Produk</h4>
+
+
+    <div class="row">
+              <?php 
+
+              $category= $_GET["category"];
+
+               $ambil = $koneksi->query("SELECT * FROM produk WHERE id_kategori='$category' ORDER BY id_produk DESC ");
+
+              ?>
+      <?php while($perproduk =$ambil->fetch_assoc()){ ?>
+            <div class="card mr-2 ml-5 mb-2" style="width: 16rem; ">
+              <img src="foto_produk/<?php echo $perproduk['foto_produk']; ?>" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h3><?php echo $perproduk ['nama_produk']; ?></h3>
+              <h5> Rp. <?php echo number_format($perproduk['harga']); ?></h5>
+            <a href="beli.php?id=<?php echo $perproduk['id_produk']; ?>" class="btn btn-primary">Beli</a>
+            <a href="detail.php?id=<?php echo $perproduk ["id_produk"]; ?>" class="btn btn-primary">Detail</a>
+              </div>
+            </div> 
+            <?php } ?>
+            </div>
+   
+
+
+         <?php include 'footer.php'; ?>
+  </body>
+</html>
